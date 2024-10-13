@@ -5,7 +5,7 @@
 #include <QFont>
 #include <QMap>
 
-// 글자 변환을 위한 맵 (영어 -> 한글)
+// 글자 변환을 위한 맵
 QMap<QString, QString> englishToKorean = {
     {"Q", "ㅂ"}, {"W", "ㅈ"}, {"E", "ㄷ"}, {"R", "ㄱ"}, {"T", "ㅅ"},
     {"Y", "ㅛ"}, {"U", "ㅕ"}, {"I", "ㅑ"}, {"O", "ㅐ"}, {"P", "ㅔ"},
@@ -24,14 +24,12 @@ MainWindow::MainWindow(QWidget *parent)
     setGeometry(100, 100, 800, 400);
     setWindowTitle("Keyboard Simulator");
 
-    // Screen (Display)
     screen = new QLabel(this);
     screen->setGeometry(64, 80, 601, 111);
     screen->setStyleSheet("background-color: gray;");
     screen->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     screen->setFont(QFont("Arial", 20));
 
-    // Clear and Copy buttons
     clearButton = new QPushButton("Clear", this);
     clearButton->setGeometry(674, 140, 45, 45);
     connect(clearButton, &QPushButton::clicked, this, &MainWindow::clearScreen);
@@ -55,7 +53,7 @@ void MainWindow::createButtons()
         "Three,3,194,200", "Four,4,239,200", "Five,5,284,200",
         "Six,6,329,200", "Seven,7,374,200", "Eight,8,419,200",
         "Nine,9,464,200", "Zero,0,509,200", "Plus,+,599,200",
-        "Backspace,⌫,644,200,81,45",
+        "Backspace,back,644,200,81,45",
         "Tab,Tab,59,245,61,45", "Qq,Q,120,245", "Ww,W,165,245",
         "Ee,E,210,245", "Rr,R,255,245", "Tt,T,300,245",
         "Yy,Y,345,245", "Uu,U,390,245", "Ii,I,435,245",
@@ -92,7 +90,7 @@ void MainWindow::createButtons()
         connect(button, &QPushButton::clicked, this, &MainWindow::buttonClicked);
         buttons[name] = button;
 
-        // 버튼의 기본 텍스트를 저장 (한/영 전환 복구용)
+        // 버튼의 기본 텍스트를 저장
         originalButtonTexts[name] = text;
     }
 }
@@ -102,7 +100,7 @@ void MainWindow::buttonClicked()
     QPushButton *button = qobject_cast<QPushButton*>(sender());
     if (button) {
         QString key = button->text();
-        if (key == "⌫") {
+        if (key == "back") {
             currentText.chop(1);
         } else if (key == "Tab") {
             currentText += "    ";  // Tab 키: 4개의 스페이스 추가
@@ -151,7 +149,7 @@ void MainWindow::updateKeyboardLabels()
         QString key = it.key();
         QPushButton *button = it.value();
 
-        if (key == "Caps" || key == "Shift" || key == "Ctrl" || key == "Alt" || key == "한/영" || key == "Enter" || key == "⌫" || key == "Tab" || key == "Menu") {
+        if (key == "Caps" || key == "Shift" || key == "Ctrl" || key == "Alt" || key == "한/영" || key == "Enter" || key == "back" || key == "Tab" || key == "Menu") {
             continue;
         }
 
